@@ -1,0 +1,32 @@
+body {
+    background-color: grey;
+}
+
+button {
+    color: white;
+    border: 0;
+    font-size: 15px;
+    background-color: blueviolet;
+    border-radius: 10px;
+}
+
+.App {
+    background-color: black;
+    margin: 10px auto;
+}
+
+#lista-de-afazeres input {
+    border: 0;
+    background-color: black;
+    font-size: 15px;
+    padding-left: 50px;
+    border-radius: 10px;
+}
+
+#lista-de-afazeres input::placeholder {
+    color: white;
+}
+
+#lista-de-afazeres input {
+    color: white;
+}
