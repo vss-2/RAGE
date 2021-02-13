@@ -1,70 +1,71 @@
-import React from 'react';
-import { View, Button, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import TcpSocket from 'react-native-tcp-socket';
-import IP from './IP.js';
+import IP from './IP';
 
-const [hasPermission, setHasPermission] = useState(null);
-const [scanned, setScanned] = useState(false);
+export default function App() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
-useEffect(() => {
-  (async () => {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
-    setHasPermission(status === 'granted');
-  })();
-}, []);
+  var enderecoIP = '';
+  
+  async function enviarCodigo(enderecoIP){
+    // console.log('Olá'+enderecoIP)
+    await fetch('http://'+enderecoIP+':8080/', {
+      method: 'post',
+      mode: 'no-cors',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: enderecoIP
+      })
+    })
+  }
 
-const handleBarCodeScanned = ({ type, data }) => {
-  setScanned(true);
-  alert(`Código de barras identificado: ${data} e ${endereco_IP}`);
-  console.log(endereco_IP);
-  const client = TcpSocket.createConnection((port: 3721, host: endereco_IP.text, data) => {
-    client.write(data);
-    client.destroy();
-  });
-};
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
-
-const ScanBarcode = ({ navigation }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text> Scanneie o código de barras </Text>
-    <BarCodeScanner
-      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={StyleSheet.absoluteFillObject}
-    />
-    
-  </View>
-);
-
-ScanBarcode.navigationOptions = {
-  title: 'Scannear de barras',
-}
-
-export default ScanBarcode;
-
-/*
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Código IP identificado: ${data}`);
-    IP = data;
-    console.log(`O IP é: ${IP}`);
+    alert(`Código de barras identificado: ${enderecoIP}`);
+    enviarCodigo(enderecoIP);
   };
 
-  return(
-    <View style={{ flexDirection: 'column', flex: 1}}>
-      <View>
-        <Text style={{ top: '100%', justifyContent: 'center', textAlign: 'center', fontSize: 20, flex: 0}}> Abra o programa no computador e escaneie o código mostrado </Text>
-      </View> 
-      <View style={{ flex: 2, top:'5%' }}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-      </View>
-      <View style={{ flex: 0, top: '-5%' }}>
-        {scanned && <Button style={{size: 50}} title={'Pressione aqui para \n escanear outro código'} onPress={() => setScanned(false)} />}
-      </View>
+  if (hasPermission === null) {
+    return <Text>Solicitando permissão de uso da câmera</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>Sem acesso a câmera!</Text>;
+  }
+
+  return (
+    <View style={{top:'10%', justifyContent: 'center', flexDirection: 'column', flex: 1}}>
+    <TextInput
+      onChangeText={(value) => enderecoIP = value}
+      style={{alignSelf: 'center', fontSize: 24}}
+      placeholder="Coloque o código aqui"
+    />
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button style={{size: 50}} title={'Pressione aqui para \n escanear outro código'} onPress={() => setScanned(false)} />}
+    </View>
     </View>
   );
 }
-*/
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    fontSize: 14
+  },
+});
