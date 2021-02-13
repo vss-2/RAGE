@@ -1,8 +1,7 @@
 import { AppRegistry } from 'react-native';
 import { name as appName } from "./app.json";
 import App from './App';
-import ScanIP from './src/ScanIP';
-// import ScanBarcode from './src/ScanBarcode';
-// import Routes from './src/Routes';
+import IP from './src/IP';
+import ScanBarcode from './src/ScanBarcode';
 
-AppRegistry.registerComponent('main', () => ScanIP);
+AppRegistry.registerComponent('main', () => ScanBarcode);
