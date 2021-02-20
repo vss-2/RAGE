@@ -5,20 +5,21 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "expo start",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
     "expo": "^40.0.0",
     "expo-barcode-scanner": "^9.1.0",
-    "expo-cli": "^4.0.17",
+    "expo-cli": "^4.1.6",
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react-native": "^0.63.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-unimodules": "^0.12.0",
-    "react-navigation": "^4.4.3"
+    "react-navigation": "^4.4.3",
+    "react-router-native": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",

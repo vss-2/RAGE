@@ -65,6 +65,3 @@ buck-out/
 
 # Expo app
 /.expo
-
-# Python
-*.py

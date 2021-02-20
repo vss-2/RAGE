@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-// import TcpSocket from 'react-native-tcp-socket';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  let [endereco_IP, onChangeText] = '';
+  const [IP, setIP] = useState('');
+  
+  function enviarCodigo(codigo_de_barras){
+    
+    await fetch(('http://'+String(setIP)), {
+      method: 'post',
+      mode: 'no-cors',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: codigo_de_barras
+      })
+    })
+  }
 
   useEffect(() => {
     (async () => {
@@ -17,12 +31,10 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Código de barras identificado: ${data} e ${endereco_IP}`);
-    console.log(endereco_IP);
-    const client = TcpSocket.createConnection((port: 3721, host: endereco_IP.text, data) => {
-      client.write(data);
-      client.destroy();
-    });
+    alert(`Código de barras identificado: ${data}`);
+    enviarCodigo(data);
+    //scanned(false);
+    setScanned(false);
   };
 
   if (hasPermission === null) {
@@ -37,8 +49,7 @@ export default function App() {
     <TextInput
       style={{alignSelf: 'center', fontSize: 24}}
       placeholder="Coloque o código aqui"
-      onChangeText={value => endereco_IP = value}
-      endereco_IP={endereco_IP}
+      onChangeText={i => this.setIP(i)}
     />
     <View style={styles.container}>
       <BarCodeScanner
