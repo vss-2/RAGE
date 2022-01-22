@@ -13,7 +13,7 @@
     "expo": "^40.0.0",
     "expo-barcode-scanner": "^9.1.0",
     "expo-cli": "^4.1.6",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "react": "16.13.1",
     "react-native": "^0.63.4",
     "react-native-gesture-handler": "^1.9.0",
